@@ -19,19 +19,20 @@ Empregados de segundo tipo devem trabalhar em horários fixos. A semana de traba
 ## Estudo de Caso 2 – Estudo de Caso: Controle de Cinemas
 
 Após várias reuniões com os futuros usuários do sistema, relacionamos uma série de regras do negócio e que serão a base para o desenvolvimento do diagrama ER:
-— A empresa de distribuição possui vários cinemas em diversas localidades;
-— Cada cinema possui uma identificação única, um nome fantasia, um endereço completo, incluindo rua, avenida, bairro, município, estado e sua capacitação de lotação;
-— Os filmes podem ser dos mais variados gêneros e nacionalidade;
-— Cada filme é registrado com um título original, e se for filme estrangeiro, possuirá também o título em português, o gênero, sua duração e seu país de origem, informações sobre os atores que compõem seu elenco, e o seu diretor. Existirá um único diretor para cada filme;
-— Alguns cinemas apresentam mais de um filme em cartaz, sendo, nesses casos, sessões alternadas com um filme e outro;
-— As sessões possuem horários que variam de acordo com a duração do filme, havendo sempre um intervalo de aproximadamente 15 minutos entre elas;
-— Os atores de um filme podem, obviamente, atuar em diversos filmes, assim como o diretor de um filme pode também ser ator nesse filme ou, ainda mais, ser ator em outro filme. Um ator possui as seguintes características: um número de identificação, um nome, uma nacionalidade e uma idade;
-— As sessões de cinema devem ter seu público registrado diariamente, para que se permita a totalização dos assistentes quando o filme sair de cartaz, ou qualquer instante.
+
+- A empresa de distribuição possui vários cinemas em diversas localidades;
+- Cada cinema possui uma identificação única, um nome fantasia, um endereço completo, incluindo rua, avenida, bairro, município, estado e sua capacitação de lotação;
+- Os filmes podem ser dos mais variados gêneros e nacionalidade;
+- Cada filme é registrado com um título original, e se for filme estrangeiro, possuirá também o título em português, o gênero, sua duração e seu país de origem, informações sobre os atores que compõem seu elenco, e o seu diretor. Existirá um único diretor para cada filme;
+- Alguns cinemas apresentam mais de um filme em cartaz, sendo, nesses casos, sessões alternadas com um filme e outro;
+- As sessões possuem horários que variam de acordo com a duração do filme, havendo sempre um intervalo de aproximadamente 15 minutos entre elas;
+- Os atores de um filme podem, obviamente, atuar em diversos filmes, assim como o diretor de um filme pode também ser ator nesse filme ou, ainda mais, ser ator em outro filme. Um ator possui as seguintes características: um número de identificação, um nome, uma nacionalidade e uma idade;
+- As sessões de cinema devem ter seu público registrado diariamente, para que se permita a totalização dos assistentes quando o filme sair de cartaz, ou qualquer instante.
 Nas reuniões de levantamento, os usuários nos passaram as seguintes necessidades de informação:
-— Apuração do publico por município, por cinema e por sessão de cada cinema;
-— Permitir uma forma de consulta, que dado um determinado ator, sejam localizados os cinemas onde estão em cartaz os filmes em que esse ator atua;
-— Em quais cinemas está sendo exibido um determinado gênero de filme;
-— Em quais cinemas estão sendo exibidos filmes nacionais.
+- Apuração do publico por município, por cinema e por sessão de cada cinema;
+- Permitir uma forma de consulta, que dado um determinado ator, sejam localizados os cinemas onde estão em cartaz os filmes em que esse ator atua;
+- Em quais cinemas está sendo exibido um determinado gênero de filme;
+- Em quais cinemas estão sendo exibidos filmes nacionais.
 
 
 ## Estudo de Caso 3 – Biblioteca Municipal de Literolândia 
