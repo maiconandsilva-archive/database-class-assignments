@@ -1,7 +1,7 @@
 # entity-relationship-diagrams
 
 Database class assignments by prof. Juliana Forin Pasquini Martinez.
-
+Answered by me, Maicon Mauricio.
 Diagrams made with BrModelo and draw.io.
 
 ## Exercícios de Modelagem – Prática 1
