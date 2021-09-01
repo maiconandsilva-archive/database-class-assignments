@@ -2,6 +2,8 @@
 
 Database class assignments by prof. Juliana Forin Pasquini Martinez.
 
+Diagrams made with BrModelo and draw.io.
+
 ## Exercícios de Modelagem – Prática 1
 
 ### Instruções:
@@ -17,6 +19,10 @@ A base de dados não deve conter redundância de dados. O modelo ER deve ser rep
 A base de dados deve manter dados sobre empregados. Cada empregado é identificado por um código e tem um nome. Para fins de controle de frequência, há dois tipos de empregados. Um tipo de empregado é o que tem horário livre. Empregados deste tipo podem trabalhar em qualquer horário do dia. Para estes empregados basta saber quantas horas devem trabalhar ao longo do mês, bem como, qual é o menor período em horas que devem trabalhar. Exemplificando, há alguns empregados que não devem trabalhar menos que duas horas cada vez.
 
 Empregados de segundo tipo devem trabalhar em horários fixos. A semana de trabalho do empregado deste tipo está organizada em turnos. Um turno (1) inicia em um dia da semana e um horário e (2) termina em um dia da semana (possivelmente diferente do de início) e em um horário. O empregado pode trabalhar dois turnos no mesmo dia da semana. Cada dia da semana é identificado por um código (algo como "d", "s", . . . ) e tem um nome (algo como "domingo", "segunda-feira", . . . ). (Adaptado - Heuser, 2008).
+
+### Answer
+
+![](case-study-1.drawio.svg)
 
 ## Estudo de Caso 2 – Estudo de Caso: Controle de Cinemas
 
@@ -36,6 +42,9 @@ Nas reuniões de levantamento, os usuários nos passaram as seguintes necessidad
 - Em quais cinemas está sendo exibido um determinado gênero de filme;
 - Em quais cinemas estão sendo exibidos filmes nacionais.
 
+### Answer
+
+![](case-study-2.jpg)
 
 ## Estudo de Caso 3 – Biblioteca Municipal de Literolândia 
 
@@ -46,3 +55,7 @@ A biblioteca conta hoje com um acervo de 30.000 itens, classificados em: Livros,
 Qualquer cidadão Literolandense pode usar a biblioteca para consulta, porém para retirar livros ele deve ser cadastrado como usuario da biblioteca, o cadastro consiste em preencher uma ficha com seus dados pessoais (nome, data de nascimento, local de nascimento, enderego, bairro, telefone, profissao e escolaridade), e fornecer um comprovante de enderego e uma foto 3X4 para a confecção da uma carteira de identificagao de usuario. Os emprestimos de itens do acervo sac) registrados em um livro de emprestimos que contem o nome do usuario, o item emprestado, a cópia que foi emprestada (identificada pelo número de tombo que é único para cada cópia), a data de saida, a data de devolução, quando o usuario devolve o item sao registrados no mesmo livro, os dias de atraso e o valor da multa, caso ele entregue com atraso. Nao existem limites de empréstimos em aberto por usuário, mas o prazo para devolução é de 7 dias. Se o usuário devolver é cobrada uma taxa diaria de multa por dia de atraso.
 
 Para melhorar a busca ao acervo os usuarios devem ter a possibilidade de busca ao cadastro por: Título do item do acervo, autor ou assunto. Para ajudar o trabalho das bibliotecárias deve ser emitido um relatorio diario com os empréstimos em atraso. Como analise estatística do use da biblioteca devem ser emitidos relatOrios com o total de empréstimos no mês por tipo de item do acervo, por item do acervo e por faixa etaria de idade de usuário.
+
+### Answer
+
+![](case-study-3.jpg)
