@@ -222,8 +222,9 @@ PRODUTO (prod_cod, pro_unidade, pro_quantidade, pro_descricao, pro_valor_uni)
 
 # Answer (Oracle)
 
+
     CREATE TABLE DEPARTAMENTO(
-    COD_DEPART NUMBER,
+    COD_DEPART NUMBER(4),
     NOME VARCHAR2(100) NOT NULL,
     DATA_INICIAL DATE,
     CONSTRAINT PK_DEPARTAMENTO PRIMARY KEY (COD_DEPART)
@@ -231,24 +232,23 @@ PRODUTO (prod_cod, pro_unidade, pro_quantidade, pro_descricao, pro_valor_uni)
     //
 
     CREATE TABLE LOCALIZACAO(
-    COD_LOC NUMBER,
-    COD_DEPART NUMBER,
+    COD_DEPART NUMBER(4),
     LOC_LOCAL VARCHAR2(252),
-    CONSTRAINT PK_LOCALIZACAO PRIMARY KEY (COD_LOC),
+    CONSTRAINT PK_LOCALIZACAO PRIMARY KEY (COD_DEPART, LOC_LOCAL),
     CONSTRAINT FK_LOCALIZACAO_COD_DEPART
         FOREIGN KEY (COD_DEPART) REFERENCES DEPARTAMENTO(COD_DEPART)
     )
     //
 
     CREATE TABLE FUNCIONARIO(
-    COD_FUNC NUMBER,
+    COD_FUNC NUMBER(4),
     FUNC_NOME VARCHAR2(100) NOT NULL,
     FUNC_CPF VARCHAR2(15),
     FUNC_SALARIO DECIMAL(4,2),
     FUNC_ENDERECO VARCHAR2(252),
-    FUNC_SEXO CHAR,
-    COD_SUPER NUMBER,
-    COD_DEPART NUMBER,
+    FUNC_SEXO CHAR(1),
+    COD_SUPER NUMBER(4),
+    COD_DEPART NUMBER(4),
     CONSTRAINT UK_FUNCIONARIO_FUNC_CPF UNIQUE (FUNC_CPF),
     CONSTRAINT CK_FUNCIONARIO_FUNC_SEXO CHECK (FUNC_SEXO IN ('M', 'F')),
     CONSTRAINT CK_FUNCIONARIO_FUNC_SALARIO CHECK (FUNC_SALARIO > 1000),
@@ -261,9 +261,9 @@ PRODUTO (prod_cod, pro_unidade, pro_quantidade, pro_descricao, pro_valor_uni)
     //
 
     CREATE TABLE DEPENDENTE(
-    COD_DEP NUMBER,
-    COD_FUNC NUMBER,
-    DEP_SEQ NUMBER,
+    COD_DEP NUMBER(4),
+    COD_FUNC NUMBER(4),
+    DEP_SEQ NUMBER(4),
     DEP_NOME VARCHAR2(100) NOT NULL,
     DEP_PARENTESCO VARCHAR2(30) NOT NULL,
     DEP_DATA_NASC DATE,
@@ -276,8 +276,8 @@ PRODUTO (prod_cod, pro_unidade, pro_quantidade, pro_descricao, pro_valor_uni)
     //
 
     CREATE TABLE PROJETO(
-    COD_PROJ NUMBER,
-    COD_DEPART NUMBER,
+    COD_PROJ NUMBER(4),
+    COD_DEPART NUMBER(4),
     PROJ_TITULO VARCHAR2(150) NOT NULL,
     PROJ_DESCRICAO VARCHAR2(252),
     PROJ_DATA_CAD DATE DEFAULT SYSDATE,
@@ -288,8 +288,8 @@ PRODUTO (prod_cod, pro_unidade, pro_quantidade, pro_descricao, pro_valor_uni)
     //
 
     CREATE TABLE PARTICIPA(
-    COD_FUNC NUMBER,
-    COD_PROJ NUMBER,
+    COD_FUNC NUMBER(4),
+    COD_PROJ NUMBER(4),
     PART_HORAS VARCHAR2(50),
     CONSTRAINT PK_PARTICIPA PRIMARY KEY (COD_FUNC,COD_PROJ),
     CONSTRAINT FK_PARTICIPA_COD_FUNC
@@ -298,3 +298,118 @@ PRODUTO (prod_cod, pro_unidade, pro_quantidade, pro_descricao, pro_valor_uni)
         FOREIGN KEY (COD_PROJ) REFERENCES PROJETO(COD_PROJ)
     )
     //
+
+# Prática 3
+
+# Comandos DDL – Parte II
+
+
+A. Executar o script criado na Prática 02.
+
+Resolva os exercícios 1 até 4. Abaixo segue o Modelo Lógico e as regras de negócio, para auxiliar
+a resolução dos exercícios.
+
+
+Exercícios
+
+1. Altere a tabela PROJETO, fazendo as seguintes mudanças:
+
+a. Adicionar uma coluna de nome STATUS, de preenchimento obrigatório, com dados de
+tipo numérico, aceitando apenas os valores 0 (flag que indica projeto inativo) e 1 (flag
+que indica projeto em andamento).
+
+    ALTER TABLE PROJETO ADD PROJ_STATUS NUMBER(1) CHECK (PROJ_STATUS IN (0, 1)) NOT NULL//
+
+b. Alterar a coluna TITULO, aumentando seu tamanho para 252 caracteres.
+
+    ALTER TABLE PROJETO MODIFY PROJ_TITULO VARCHAR2(252)//
+
+c. Renomear a coluna DATA_CAD para DATA_CADASTRO
+
+    ALTER TABLE PROJETO RENAME COLUMN PROJ_DATA_CAD TO PROJ_DATA_CADASTRO//
+
+
+2. Altere a tabela FUNCIONARIO, fazendo as seguintes mudanças:
+
+a. Transformar a coluna ENDERECO numa tabela separada, sendo que cada endereço poderá
+estar vinculado a mais de um funcionário (Ex: marido, esposa e filho trabalhando na mesma
+empresa) e cada funcionário poderá informar mais de um endereço. DICA: Dessa forma,
+teremos um relacionamento N x M entre funcionário e a nova entidade ENDERECO.
+
+    CREATE TABLE ENDERECO(
+        COD_END NUMBER(4),
+        END_ENDERECO VARCHAR2(150) NOT NULL,
+        CONSTRAINT PK_ENDERECO PRIMARY KEY (COD_END)
+    )
+    //
+
+    CREATE TABLE FUNCIONARIO_ENDERECO(
+        COD_END NUMBER(4),
+        COD_FUNC NUMBER(4),
+        CONSTRAINT PK_FUNCIONARIO_ENDERECO PRIMARY KEY (COD_END, COD_FUNC),
+        CONSTRAINT FK_FUNC_END_COD_FUNC
+            FOREIGN KEY (COD_FUNC) REFERENCES FUNCIONARIO(COD_FUNC),
+        CONSTRAINT FK_FUNC_END_COD_END
+            FOREIGN KEY (COD_END) REFERENCES ENDERECO(COD_END)
+    )
+    //
+
+    ALTER TABLE FUNCIONARIO DROP COLUMN FUNC_ENDERECO//
+
+b. Excluir a restrição associada à coluna SALARIO.
+
+    ALTER TABLE FUNCIONARIO DROP CONSTRAINT CK_FUNCIONARIO_FUNC_SALARIO//
+
+c. Desativar e depois ativar a restrição associada à coluna CPF.
+
+    ALTER TABLE FUNCIONARIO DISABLE CONSTRAINT UK_FUNCIONARIO_FUNC_CPF//
+    ALTER TABLE FUNCIONARIO ENABLE CONSTRAINT UK_FUNCIONARIO_FUNC_CPF//
+
+d. Desativar e depois ativar a restrição associada à coluna cod_func.
+
+> Não foi possível, pois o sistema retorna um erro indicando que há colunas em
+> outras tabelas referenciando esta chave primeira.
+
+3. Altere a tabela DEPENDENTE, fazendo as seguintes mudanças:
+
+a. A coluna PARENTESCO deixa de ser texto e passa a ser controlada através de outra tabela,
+onde são armazenados o CODIGO e DESCRICAO do tipo de parentescos aceitos pela
+empresa. Dessa forma, uma chave estrangeira na tabela DEPENDENTE deverá referenciar a
+chave primária dessa nova tabela, num relacionamento 1 x N (Parentesco → Dependente).
+
+    CREATE TABLE PARENTESCO(
+        COD_PAR NUMBER(4),
+        PAR_DESCRICAO VARCHAR2(50),
+        CONSTRAINT PK_PARENTESCO PRIMARY KEY (COD_PAR)
+    )
+    //
+
+    ALTER TABLE DEPENDENTE ADD COD_PAR NUMBER//
+    ALTER TABLE DEPENDENTE ADD CONSTRAINT FK_DEPENDENTE_COD_PAR
+        FOREIGN KEY (COD_PAR) REFERENCES PARENTESCO(COD_PAR)//
+
+    ALTER TABLE DEPENDENTE DROP COLUMN DEP_PARENTESCO//
+
+b. Criar uma chave alternativa na tabela DEPENDENTE, onde será armazenado o CPF dos
+dependentes.
+
+    ALTER TABLE DEPENDENTE ADD DEP_CPF VARCHAR2(15)//
+    ALTER TABLE DEPENDENTE ADD CONSTRAINT
+        UK_DEPENDENTE_DEP_CPF UNIQUE (DEP_CPF)//
+
+
+c. Automatizar o processo de exclusão de registros da tabela DEPENDENTE ao excluir um
+registro da tabela FUNCIONARIO. Para isso, utilizar o comando DELETE CASCADE na chave
+estrangeira da coluna DEPENDENTE.COD_FUNC. (Lembre-se: não é possível modificar uma
+constraint!) vide aula DDL – PARTE 2.
+
+    ALTER TABLE DEPENDENTE DROP CONSTRAINT FK_FUNCIONARIO_COD_FUNC//
+    ALTER TABLE DEPENDENTE ADD CONSTRAINT FK_FUNCIONARIO_COD_FUNC
+        FOREIGN KEY (COD_FUNC) REFERENCES FUNCIONARIO(COD_FUNC)
+        ON DELETE CASCADE//
+
+4. Altere a tabela PARTICIPA, fazendo as seguintes mudanças:
+
+a. Renomear a tabela PARTICIPA para FUNC_PROJETO
+
+    RENAME PARTICIPA TO FUNC_PROJETO//
