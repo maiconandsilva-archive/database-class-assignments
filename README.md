@@ -413,3 +413,143 @@ constraint!) vide aula DDL – PARTE 2.
 a. Renomear a tabela PARTICIPA para FUNC_PROJETO
 
     RENAME PARTICIPA TO FUNC_PROJETO//
+
+## Prática 4
+
+INSTRUÇÕES:  
+
+- A prática pode ser resolvida em dupla.  
+- **Entregar no teams até: 12/11/2021** 
+- **OBS:  Os  scripts  para  preparação  do  ambiente  já  estão  prontos,  arquivo ambiente\_biblioteca.zip.** 
+
+**Estudo de Caso:** **Biblioteca** 
+
+***Modelo E-R da Biblioteca*** 
+
+![](assets/Aspose.Words.dcc866ca-3c3f-4f0d-b081-10d5b3dcb5a5.004.jpeg)
+
+**OBS:** Os livros podem ter devoluções parciais, ou seja, um aluno pode pegar emprestado 3 livros 
+
+diferentes e devolver apenas um. 
+
+1. Listar o nome da pessoa do empréstimo de número 1. 
+1. Listar todas as editoras ordenadas por ordem alfabética. 
+1. Exibir os títulos dos livros que começam com a letra A. 
+1. Exibir os títulos dos livros que começam com a letra A e que tenham o ano de publicação maior que 2013. 
+1. Exibir a quantidade de telefones que possuem DDD igual a 12. 
+6. Listar a quantidade de empréstimo por aluno. (exiba: - pes\_nro\_matricula e - quantidade).  
+6. Listar as editoras e os seus livros. (exiba: - edi\_cod,edi\_descricao, - liv\_cod).  
+6. Listar os códigos dos exemplares (exe\_cod), a descrição (exe\_descricao) do empréstimo realizado em uma determinada data. 
+6. Listar os livros que possuam mais de 3 exemplares. 
+6. Listar os professores (nome e titulação) com seus respectivos telefones. OBS: Listar também os professores que não tenham telefone. Realizar duas resoluções uma com a sintaxe ANSI e outra com a sintaxe ORACLE. 
+6. Listar o livro (liv\_titulo) mais antigo da biblioteca 
+6. Exibir o nome da pessoa que mais emprestou livro na biblioteca. 
+6. Listar a quantidade de exemplares por livro. 
+6. Listar os livros (liv\_titulo) que começam com A e possuem ano de publicação maior que 2011. 
+6. Listar os livros emprestados pela pessoa de código 1 (Listar liv\_titulo) 
+
+
+### Answers
+
+### 1.
+
+    SELECT PES_NOME
+    FROM EMPRESTIMO e
+    INNER JOIN PESSOA p ON p.PES_COD = e.PES_COD
+    WHERE EMP_COD = 1;
+
+### 2.
+
+    SELECT * FROM EDITORA ORDER BY EDI_DESCRICAO ASC;
+
+### 3.
+
+    SELECT LIV_TITULO FROM LIVRO WHERE UPPER(LIV_TITULO) LIKE 'A%';
+
+### 4.
+
+    SELECT LIV_TITULO FROM LIVRO
+    WHERE UPPER(LIV_TITULO) LIKE 'A%'
+    AND ANOPUBLICACAO > 2013;
+
+### 5.
+
+    SELECT COUNT(*) FROM TELEFONE WHERE TEL_DDD = 12;
+
+### 6.
+
+    SELECT PES_NRO_MATRICULA, COUNT(*) FROM EMPRESTIMO e
+    INNER JOIN ALUNO a ON a.PES_COD = e.PES_COD
+    GROUP BY PES_NRO_MATRICULA;
+
+### 7.
+
+    SELECT
+    e.edi_cod, edi_descricao, liv_cod
+    FROM EDITORA e
+    INNER JOIN LIVRO l ON e.EDI_COD = l.EDI_COD;
+
+### 8.
+
+    SELECT ex.EXE_COD, EXE_DESCRICAO
+    FROM  EXEMPLAR ex
+    INNER JOIN ITEM_EMPRESTIMO ie ON ex.EXE_COD = ie.EXE_COD
+    INNER JOIN EMPRESTIMO e ON e.EMP_COD = ie.EMP_COD
+    WHERE EMP_DATA_EMPRESTIMO = to_date('2015-11-03', 'YYYY-MM-DD');
+
+### 9.
+
+    SELECT LIV_TITULO
+    FROM LIVRO l
+    WHERE
+    (SELECT COUNT(*)
+    FROM EXEMPLAR ex
+    WHERE ex.LIV_COD = l.LIV_COD) > 3;
+
+### 10.
+
+    SELECT PES_NOME, TITULACAO, TEL_NUMERO
+    FROM PROFESSOR prof
+    INNER JOIN PESSOA p ON p.PES_COD = prof.PES_COD
+    LEFT JOIN TELEFONE t ON t.PES_COD = prof.PES_COD;
+
+### 11.
+
+    SELECT liv_titulo FROM LIVRO
+    WHERE ANOPUBLICACAO = (SELECT MIN(ANOPUBLICACAO) FROM LIVRO);
+
+### 12.
+
+    SELECT PES_NOME FROM (
+    SELECT COUNT(*) c, p.PES_COD, p.PES_NOME
+    FROM EMPRESTIMO e
+    INNER JOIN PESSOA p ON p.PES_COD = e.PES_COD
+    GROUP BY p.PES_COD, p.PES_NOME
+    ORDER BY C DESC
+    )
+    WHERE rownum = 1;
+
+### 13.
+
+    SELECT COUNT(*), LIV_TITULO
+    FROM EXEMPLAR ex
+    INNER JOIN LIVRO l ON ex.LIV_COD = l.LIV_COD
+    GROUP BY ex.LIV_COD, LIV_TITULO;
+
+### 14.
+
+    SELECT LIV_TITULO
+    FROM LIVRO
+    WHERE UPPER(LIV_TITULO) LIKE 'A%'
+    AND ANOPUBLICACAO > 2011;
+
+### 15.
+
+    SELECT DISTINCT LIV_TITULO
+    FROM EMPRESTIMO e 
+    INNER JOIN ITEM_EMPRESTIMO ie ON e.EMP_COD = ie.EMP_COD
+    INNER JOIN EXEMPLAR ex ON ex.EXE_COD = ie.EXE_COD
+    INNER JOIN LIVRO l ON l.LIV_COD = ex.LIV_COD
+    WHERE PES_COD = 1;
+
+
